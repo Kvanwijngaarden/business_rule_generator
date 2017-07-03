@@ -13,17 +13,29 @@ class BRDImplementDAO {
     private PreparedStatement BRDStatement;
     private PreparedStatement BRDDeleteStatement;
 
-    void BRDtoTarget(Map<String, String> DBCredentials, Map<String, String> BRDefinition, String Action) throws SQLException {
+
+    /* Slaat record op van de rules.. niet de template activeren.. Alleen de waardes die erin moeten komen */
+
+    public void InsertBRDtoTarget(Map<String, String> DBCredentials, Map<String, String> BRDefinition) throws SQLException {
 
         try {
 //            connection = jdbcFactory.getDB("oracle").getTargetConnection(DBCredentials);
+
+
+
+            System.out.println("BRDIMPL INSERT");
+            System.out.println("url " +  DBCredentials.get("URL"));
+            System.out.println("user " + DBCredentials.get("USER"));
+            System.out.println("pass " + DBCredentials.get("PASS"));
+
             connection = jdbcFactory.getDB("oracle").createConnection(DBCredentials.get("URL"), DBCredentials.get("USER"), DBCredentials.get("PASS"));
 
-            if (Action.equals("INSERT")) {
-                BRDStatement = connection.prepareStatement("INSERT INTO GRULE (RULE_ID, DESCRIPTION, NAME, TARGET_TABLE, TARGET_COLUMN, TRIGGER_EVENT, OPERATOR, VALUE, VALUE2, COMPARE_TABLE, COMPARE_COLUMN, TRIGGER_ON, TRIGGER_STATEMENT, ISACTIVE, GCUSTOMER_CUS_ID, GRULETYPE_RULETYPE_ID, GLANGUAGE_LANG_ID) VALUES ('" + BRDefinition.get("RULE_ID") + "',?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-            } else if (Action.equals("UPDATE")) {
-                BRDStatement = connection.prepareStatement("UPDATE GRULE SET DESCRIPTION = ?, NAME = ?, TARGET_TABLE = ?, TARGET_COLUMN = ?, TRIGGER_EVENT = ?, OPERATOR = ?, VALUE = ?, VALUE2 = ?, COMPARE_TABLE = ?, COMPARE_COLUMN = ?, TRIGGER_ON = ?, TRIGGER_STATEMENT = ?, ISACTIVE = ?, GCUSTOMER_CUS_ID = ?, GRULETYPE_RULETYPE_ID = ?, GLANGUAGE_LANG_ID = ? WHERE NAME= '" + BRDefinition.get("NAME") + "'");
-            }
+
+
+
+
+            BRDStatement = connection.prepareStatement("INSERT INTO GRULE (RULE_ID, DESCRIPTION, NAME, TARGET_TABLE, TARGET_COLUMN, TRIGGER_EVENT, OPERATOR, VALUE, VALUE2, COMPARE_TABLE, COMPARE_COLUMN, TRIGGER_ON, TRIGGER_STATEMENT, ISACTIVE, GCUSTOMER_CUS_ID, GRULETYPE_RULETYPE_ID, GLANGUAGE_LANG_ID) VALUES ('" + BRDefinition.get("RULE_ID") + "',?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+
             BRDStatement.setString(1, BRDefinition.get("DESCRIPTION"));
             BRDStatement.setString(2, BRDefinition.get("NAME"));
             BRDStatement.setString(3, BRDefinition.get("TARGET_TABLE"));
@@ -55,9 +67,78 @@ class BRDImplementDAO {
 
     }
 
+    public void UpdateBRDtoTarget(Map<String, String> DBCredentials, Map<String, String> BRDefinition) throws SQLException {
+
+        try {
+//            connection = jdbcFactory.getDB("oracle").getTargetConnection(DBCredentials);
+
+
+            System.out.println("BRDIMPL UPDATE");
+            System.out.println("url " + DBCredentials.get("URL"));
+            System.out.println("user " + DBCredentials.get("USER"));
+            System.out.println("pass " + DBCredentials.get("PASS"));
+
+            connection = jdbcFactory.getDB("oracle").createConnection(DBCredentials.get("URL"), DBCredentials.get("USER"), DBCredentials.get("PASS"));
+
+
+
+
+
+
+            BRDStatement = connection.prepareStatement("UPDATE GRULE SET DESCRIPTION = ?, NAME = ?, TARGET_TABLE = ?, TARGET_COLUMN = ?, TRIGGER_EVENT = ?, OPERATOR = ?, VALUE = ?, VALUE2 = ?, COMPARE_TABLE = ?, COMPARE_COLUMN = ?, TRIGGER_ON = ?, TRIGGER_STATEMENT = ?, ISACTIVE = ?, GCUSTOMER_CUS_ID = ?, GRULETYPE_RULETYPE_ID = ?, GLANGUAGE_LANG_ID = ? WHERE NAME= '" + BRDefinition.get("NAME") + "'");
+
+            BRDStatement.setString(1, BRDefinition.get("DESCRIPTION"));
+            BRDStatement.setString(2, BRDefinition.get("NAME"));
+            BRDStatement.setString(3, BRDefinition.get("TARGET_TABLE"));
+            BRDStatement.setString(4, BRDefinition.get("TARGET_COLUMN"));
+            BRDStatement.setString(5, BRDefinition.get("TRIGGER_EVENT"));
+            BRDStatement.setString(6, BRDefinition.get("OPERATOR"));
+            BRDStatement.setString(7, BRDefinition.get("VALUE"));
+            BRDStatement.setString(8, BRDefinition.get("VALUE2"));
+            BRDStatement.setString(9, BRDefinition.get("COMPARE_TABLE"));
+            BRDStatement.setString(10, BRDefinition.get("COMPARE_COLUMN"));
+            BRDStatement.setString(11, BRDefinition.get("TRIGGER_ON"));
+            BRDStatement.setString(12, BRDefinition.get("TRIGGER_STATEMENT"));
+            BRDStatement.setInt(13, 1);
+            BRDStatement.setInt(14, Integer.parseInt(BRDefinition.get("GCUSTOMER_CUS_ID")));
+            BRDStatement.setInt(15, Integer.parseInt(BRDefinition.get("GRULETYPE_RULETYPE_ID")));
+            BRDStatement.setInt(16, Integer.parseInt(BRDefinition.get("GLANGUAGE_LANG_ID")));
+
+
+            BRDStatement.executeQuery();
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }
+        finally {
+            if (BRDStatement != null) {
+                BRDStatement.close();
+            }
+            if (connection != null) {
+                connection.close();
+                System.out.println("Connection to database closed.");
+            }
+        }
+
+    }
+
+
+
+
+
+
     void deleteBRDTarget(Map<String, String> DBCredentials, Map<String, String> BRDefinition) throws SQLException {
         try {
-            connection = jdbcFactory.getDB("oracle").getTargetConnection(DBCredentials);
+//            connection = jdbcFactory.getDB("oracle").getTargetConnection(DBCredentials);
+
+            System.out.println("BRDIMPL DELETE");
+            System.out.println("url " + DBCredentials.get("URL"));
+            System.out.println("user " + DBCredentials.get("USER"));
+            System.out.println("pass " + DBCredentials.get("PASS"));
+
+            connection = jdbcFactory.getDB("oracle").createConnection(DBCredentials.get("URL"), DBCredentials.get("USER"), DBCredentials.get("PASS"));
+
+
             BRDDeleteStatement = connection.prepareStatement("DELETE FROM GRULE WHERE NAME = '" + BRDefinition.get("NAME") + "'");
             BRDDeleteStatement.executeQuery();
         } finally {

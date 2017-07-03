@@ -25,6 +25,13 @@ class TemplateDAO {
         String templateValue = null;
         try {
 //            connection = jdbcFactory.getDB("oracle").getToolConnection();
+
+
+            System.out.println("Template");
+            System.out.println("url " + Constants.DB_URL);
+            System.out.println("user " + Constants.DB_USER);
+            System.out.println("pass " + Constants.DB_PASS);
+
             connection = jdbcFactory.getDB("oracle").createConnection(Constants.DB_URL, Constants.DB_USER, Constants.DB_PASS);
 
             statement = connection.createStatement();

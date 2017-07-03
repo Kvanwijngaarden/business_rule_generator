@@ -20,12 +20,24 @@ class BRImplementDAO {
 
         try{
 //            connection = jdbcFactory.getDB("oracle").getTargetConnection(DBCredentials);
+
+            System.out.println("BRIMPL SEND");
+            System.out.println("url " + DBCredentials.get("URL"));
+            System.out.println("user " + DBCredentials.get("USER"));
+            System.out.println("pass " + DBCredentials.get("PASS"));
+
             connection = jdbcFactory.getDB("oracle").createConnection(DBCredentials.get("URL"), DBCredentials.get("USER"), DBCredentials.get("PASS"));
+
+
+
             generatedTemplateStatement = connection.createStatement();
 
             generatedTemplateStatement.executeQuery(businessRule);
 
 
+        }
+        catch (SQLException e){
+            System.out.println(e);
         }
 
         finally{
@@ -41,7 +53,13 @@ class BRImplementDAO {
     void deleteBusinessRule(Map<String, String> BRDefinition, Map<String, String> DBCredentials) throws SQLException {
 
         try{
-            connection = jdbcFactory.getDB("oracle").getTargetConnection(DBCredentials);
+
+            System.out.println("BRIMPL DELETE");
+            System.out.println("url " + DBCredentials.get("URL"));
+            System.out.println("user " + DBCredentials.get("USER"));
+            System.out.println("pass " + DBCredentials.get("PASS"));
+
+            connection = jdbcFactory.getDB("oracle").createConnection(DBCredentials.get("URL"), DBCredentials.get("USER"), DBCredentials.get("PASS"));
 
 
             if (BRDefinition.get("TRIGGER_STATEMENT").equals("TRIGGER")){
@@ -52,6 +70,9 @@ class BRImplementDAO {
             }
 
             deleteStatement.executeQuery();
+        }
+        catch (SQLException e){
+            System.out.println(e);
         }
         finally{
             if (deleteStatement != null){

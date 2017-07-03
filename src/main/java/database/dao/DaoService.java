@@ -31,8 +31,12 @@ public class DaoService {
         brImplementDAO.deleteBusinessRule(BRDefinition, DBCredentials);
     }
 
-    public void BRDtoTarget(Map<String, String> DBCredentials, Map<String, String> BRDefinition, String Action) throws SQLException {
-        brdImplementDAO.BRDtoTarget(DBCredentials, BRDefinition, Action);
+    public void InsertBRDtoTarget(Map<String, String> DBCredentials, Map<String, String> BRDefinition) throws SQLException {
+        brdImplementDAO.InsertBRDtoTarget(DBCredentials, BRDefinition);
+    }
+
+    public void UpdateBRDtoTarget(Map<String, String> DBCredentials, Map<String, String> BRDefinition) throws SQLException {
+        brdImplementDAO.UpdateBRDtoTarget(DBCredentials, BRDefinition);
     }
 
     public void deleteBRDTarget(Map<String, String> DBCredentials, Map<String, String> BRDefinition) throws SQLException {

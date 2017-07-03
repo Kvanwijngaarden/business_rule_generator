@@ -1,6 +1,9 @@
+import controller.logic.GeneratorService;
 import database.dao.DaoService;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -9,9 +12,15 @@ import java.sql.SQLException;
 public class Main {
 
     public static void main(String args[]) throws SQLException{
-        DaoService daoService = new DaoService();
+        GeneratorService gen = new GeneratorService();
 
-        System.out.println(daoService.getBRDefinition(230));
+
+        List<Integer> rules = new ArrayList<>();
+        rules.add(235);
+        rules.add(236);
+        rules.add(237);
+
+        gen.InsertTemplate(rules);
 
     }
 }

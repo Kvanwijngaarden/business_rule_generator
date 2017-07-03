@@ -23,11 +23,4 @@ public class Mysql implements Ijdbc {
         return null;
     }
 
-    public Connection getToolConnection() throws SQLException {
-        return null;
-    }
-
-    public Connection getTargetConnection(Map<String, String> DBCredentials) throws SQLException {
-        return null;
-    }
 }

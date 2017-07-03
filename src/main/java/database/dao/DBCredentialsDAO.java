@@ -24,7 +24,16 @@ class DBCredentialsDAO {
 
         try{
 //            connection = jdbcFactory.getDB("oracle").getToolConnection();
+
+
+            System.out.println("Credentials");
+            System.out.println("url " + Constants.DB_URL);
+            System.out.println("user " + Constants.DB_USER);
+            System.out.println("pass " + Constants.DB_PASS);
+
+
             connection = jdbcFactory.getDB("oracle").createConnection(Constants.DB_URL, Constants.DB_USER, Constants.DB_PASS);
+
 
             statement = connection.createStatement();
             rs = statement.executeQuery(query);
@@ -32,7 +41,7 @@ class DBCredentialsDAO {
             while (rs.next()) {
                 DBCredentials.put("USER", rs.getString("DATABASE_USERNAME"));
                 DBCredentials.put("PASS", rs.getString("DATABASE_PASSWORD"));
-                DBCredentials.put("DB_URL", rs.getString("CONNECTION_STRING"));
+                DBCredentials.put("URL", rs.getString("CONNECTION_STRING"));
             }
         } catch (SQLException e) {
             System.out.println("ERROR: Unable to Connect to DataAccess.Database.");
