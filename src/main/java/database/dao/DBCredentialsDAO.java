@@ -15,7 +15,7 @@ class DBCredentialsDAO {
     private Connection connection;
     private Statement statement;
 
-    Map getDBCredentials(Map<String, String> brdefinition) throws SQLException {
+    public Map getDBCredentials(Map<String, String> brdefinition) throws SQLException {
         String customerID = brdefinition.get("GCUSTOMER_CUS_ID");
 
         String query = "SELECT DATABASE_USERNAME, DATABASE_PASSWORD, CONNECTION_STRING FROM GCUSTOMER where CUS_ID='" + customerID + "'";

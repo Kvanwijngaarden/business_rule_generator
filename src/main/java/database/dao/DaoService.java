@@ -1,5 +1,6 @@
 package database.dao;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
 
@@ -10,6 +11,7 @@ public class DaoService {
     private DBCredentialsDAO credentialsDAO = new DBCredentialsDAO();
     private BRImplementDAO brImplementDAO = new BRImplementDAO();
     private BRDImplementDAO brdImplementDAO = new BRDImplementDAO();
+    private TargetRulesDAO targetRulesDAO = new TargetRulesDAO();
 
     public Map getBRDefinition(int brID) throws SQLException{
         return definitionDAO.getBusinessRuleDefinition(brID);
@@ -42,5 +44,13 @@ public class DaoService {
     public void deleteBRDTarget(Map<String, String> DBCredentials, Map<String, String> BRDefinition) throws SQLException {
         brdImplementDAO.deleteBRDTarget(DBCredentials, BRDefinition);
     }
+
+    public Map<String, Map<String, String>> getTargetRules(Map<String, String> DBCredentials) throws SQLException {
+        return targetRulesDAO.getTargetRules(DBCredentials);
+    }
+
+//    public ResultSet getTargetRules(Map<String, String> DBCredentials) throws SQLException {
+//        return targetRulesDAO.getTargetRules(DBCredentials);
+//    }
 
 }

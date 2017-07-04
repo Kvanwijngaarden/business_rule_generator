@@ -48,4 +48,25 @@ public class BusinessRuleService {
         String output = "The brule service is working! Hooray!";
         return output;
     }
+
+
+    @Path("/targetrules")
+    @GET
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response test() throws SQLException{
+        DaoService doa = new DaoService();
+
+        /*De map met credentials van de user moet nog meekomen vanuit Apex*/
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("USER", "tosad_2016_2b_team4_target");
+        map.put("PASS", "tosad_2016_2b_team4_target");
+        map.put("URL", "jdbc:oracle:thin:@//ondora02.hu.nl:8521/cursus02.hu.nl");
+
+        Map<String, Map<String,String>> result = new HashMap<String, Map<String,String>>();
+
+        result = doa.getTargetRules(map);
+
+        return Response.ok(result).header("Access-Control-Allow-Origin","*").build();
+
+    }
 }
