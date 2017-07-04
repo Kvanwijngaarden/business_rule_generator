@@ -54,25 +54,19 @@ class BRImplementDAO {
     void deleteBusinessRule(Map<String, String> BRDefinition, Map<String, String> DBCredentials) throws SQLException {
 
         try{
-
-            System.out.println("BRIMPL DELETE");
-            System.out.println("url " + DBCredentials.get("URL"));
-            System.out.println("user " + DBCredentials.get("USER"));
-            System.out.println("pass " + DBCredentials.get("PASS"));
-
             connection = jdbcFactory.getDB("oracle").createConnection(DBCredentials.get("URL"), DBCredentials.get("USER"), DBCredentials.get("PASS"));
-
 
             if (BRDefinition.get("TRIGGER_STATEMENT").equals("TRIGGER")){
 //                disableStatement = connection.prepareStatement("DROP TRIGGER " + BRDefinition.get("NAME") + " DISABLE");
 //                deleteStatement = connection.prepareStatement("DROP TRIGGER " + BRDefinition.get("NAME"));
-                deleteStatement = connection.prepareStatement(jdbcFactory.getDB("orcale").disableTargetRule(BRDefinition));
-                deleteStatement = connection.prepareStatement(jdbcFactory.getDB("orcale").deleteTrigger(BRDefinition));
+                disableStatement = connection.prepareStatement(jdbcFactory.getDB("orcale").disableTrigger(BRDefinition));
+                deleteStatement  = connection.prepareStatement(jdbcFactory.getDB("orcale").deleteTrigger(BRDefinition));
             }
             else if (BRDefinition.get("TRIGGER_STATEMENT").equals("CONSTRAINT")){
-                disableStatement = connection.prepareStatement("ALTER TABLE" + BRDefinition.get("TARGET_TABLE") +" DISABLE CONSTRAINT " + BRDefinition.get("NAME"));
-                deleteStatement = connection.prepareStatement("ALTER TABLE" + BRDefinition.get("TARGET_TABLE") +" DROP CONSTRAINT " + BRDefinition.get("NAME"));
-
+//                disableStatement = connection.prepareStatement("ALTER TABLE" + BRDefinition.get("TARGET_TABLE") +" DISABLE CONSTRAINT " + BRDefinition.get("NAME"));
+//                deleteStatement = connection.prepareStatement("ALTER TABLE" + BRDefinition.get("TARGET_TABLE") +" DROP CONSTRAINT " + BRDefinition.get("NAME"));
+                disableStatement = connection.prepareStatement(jdbcFactory.getDB("orcale").disableConstraint(BRDefinition));
+                deleteStatement  = connection.prepareStatement(jdbcFactory.getDB("orcale").deleteConstraint(BRDefinition));
             }
 
             disableStatement.executeQuery();

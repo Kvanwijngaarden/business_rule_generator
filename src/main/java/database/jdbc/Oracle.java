@@ -11,7 +11,6 @@ import java.util.Map;
  */
 public class Oracle implements Ijdbc{
 
-    private static Oracle instance = new Oracle();
     private static final String JDBC_DRIVER = "oracle.jdbc.driver.OracleDriver";
 
     public Connection createConnection(String DB_URL, String USER, String PASS) throws SQLException{
@@ -33,7 +32,7 @@ public class Oracle implements Ijdbc{
 
     @Override
     public String deleteConstraint(Map<String, String> BRDefinition) {
-        return null;
+        return "ALTER TABLE  " + BRDefinition.get("TARGET_TABLE") +" DROP CONSTRAINT " + BRDefinition.get("NAME");
     }
 
     @Override
@@ -43,7 +42,9 @@ public class Oracle implements Ijdbc{
 
     @Override
     public String enableConstraint(Map<String, String> BRDefinition) {
-        return null;
+        System.out.println(BRDefinition.get("TARGET_TABLE") );
+        System.out.println(BRDefinition.get("NAME") );
+        return "ALTER TABLE " + BRDefinition.get("TARGET_TABLE") +" ENABLE CONSTRAINT " + BRDefinition.get("NAME");
     }
 
     @Override
@@ -53,7 +54,7 @@ public class Oracle implements Ijdbc{
 
     @Override
     public String disableConstraint(Map<String, String> BRDefinition) {
-        return null;
+        return "ALTER TABLE" + BRDefinition.get("TARGET_TABLE") +" DISABLE CONSTRAINT " + BRDefinition.get("NAME");
     }
 
 
