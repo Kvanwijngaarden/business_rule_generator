@@ -1,6 +1,7 @@
 package database.jdbc;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Map;
 
@@ -19,8 +20,18 @@ import java.util.Map;
 
 public class Mysql implements Ijdbc {
 
+    private static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+
     public Connection createConnection(String DB_URL, String USER, String PASS) throws SQLException {
-        return null;
+        Connection conn = null;
+
+        try {Class.forName(JDBC_DRIVER);}
+        catch(ClassNotFoundException e) {e.printStackTrace();}
+
+        try {conn = DriverManager.getConnection(DB_URL, USER, PASS);}
+        catch (SQLException e) {e.printStackTrace();}
+
+        return conn;
     }
 
 }

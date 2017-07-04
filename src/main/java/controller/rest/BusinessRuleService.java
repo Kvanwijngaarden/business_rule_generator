@@ -23,4 +23,6 @@ public class BusinessRuleService {
         String output = "The brule service is working! Hooray!";
         return output;
     }
+
+
 }
