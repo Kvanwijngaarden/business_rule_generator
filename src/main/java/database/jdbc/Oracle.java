@@ -26,4 +26,25 @@ public class Oracle implements Ijdbc{
         return conn;
     }
 
+    @Override
+    public String deleteTrigger(Map<String, String> BRDefinition) {
+        return "DROP TRIGGER " + BRDefinition.get("NAME");
+    }
+
+    @Override
+    public String deleteConstraint(Map<String, String> BRDefinition) {
+        return null;
+    }
+
+    @Override
+    public String enableTargetRule(Map<String, String> BRDefinition) {
+        return null;
+    }
+
+    @Override
+    public String disableTargetRule(Map<String, String> BRDefinition) {
+        return null;
+    }
+
+
 }

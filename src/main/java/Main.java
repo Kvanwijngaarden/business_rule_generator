@@ -33,7 +33,7 @@ public class Main {
 
         for (Map.Entry<String, Map<String, String>> entry : result.entrySet())
         {
-            System.out.println(entry.getKey() + "/" + entry.getValue());
+            System.out.println("ID = " + entry.getKey() + ", Map = " + entry.getValue());
         }
 
 

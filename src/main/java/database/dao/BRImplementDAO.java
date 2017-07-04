@@ -14,6 +14,7 @@ class BRImplementDAO {
     private Connection connection;
     private Statement generatedTemplateStatement;
     private PreparedStatement deleteStatement;
+    private PreparedStatement disableStatement;
 
     //apply trigger or constraint to target database
     void sendBusinessRule(String businessRule, Map<String, String> DBCredentials) throws SQLException {
@@ -63,12 +64,17 @@ class BRImplementDAO {
 
 
             if (BRDefinition.get("TRIGGER_STATEMENT").equals("TRIGGER")){
-                deleteStatement = connection.prepareStatement("DROP TRIGGER " + BRDefinition.get("NAME"));
+                disableStatement = connection.prepareStatement("DROP TRIGGER " + BRDefinition.get("NAME") + " DISABLE");
+//                deleteStatement = connection.prepareStatement("DROP TRIGGER " + BRDefinition.get("NAME"));
+                deleteStatement = connection.prepareStatement(jdbcFactory.getDB("orcale").deleteTrigger(BRDefinition));
             }
             else if (BRDefinition.get("TRIGGER_STATEMENT").equals("CONSTRAINT")){
+                disableStatement = connection.prepareStatement("ALTER TABLE" + BRDefinition.get("TARGET_TABLE") +" DISABLE CONSTRAINT " + BRDefinition.get("NAME"));
                 deleteStatement = connection.prepareStatement("ALTER TABLE" + BRDefinition.get("TARGET_TABLE") +" DROP CONSTRAINT " + BRDefinition.get("NAME"));
+
             }
 
+            disableStatement.executeQuery();
             deleteStatement.executeQuery();
         }
         catch (SQLException e){

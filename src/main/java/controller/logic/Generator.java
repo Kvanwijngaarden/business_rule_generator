@@ -12,6 +12,10 @@ import java.util.Map;
 public class Generator {
     private DaoService daoService = new DaoService();
 
+    /*
+     * Generates the template. It searches for keywords and replaces these with values
+     * Keywords look like xx{COLUMN_NAME}xx
+    */
     String generateTemplate(int brID) throws SQLException {
         Map<String, String> definition = daoService.getBRDefinition(brID);
         String template = daoService.getTemplate(definition);
@@ -22,12 +26,7 @@ public class Generator {
         return template;
     }
 
-
-//    public void executeTemplate(int brID, String Action) throws SQLException{
-    // inser update delete
     public void InsertTemplate(List<Integer> exList) throws SQLException{
-
-
         for (int brID : exList){
 
 
@@ -57,6 +56,7 @@ public class Generator {
     public void deleteBusinessRule(int brID) throws SQLException{
         Map<String, String> BRDefinition = daoService.getBRDefinition(brID);
         Map<String, String> DBCredentials = daoService.getDBCredentials(BRDefinition);
+
         daoService.deleteBusinessRule(BRDefinition, DBCredentials);
         daoService.deleteBRDTarget(DBCredentials, BRDefinition);
     }
