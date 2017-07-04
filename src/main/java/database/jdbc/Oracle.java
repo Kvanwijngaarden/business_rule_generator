@@ -37,12 +37,22 @@ public class Oracle implements Ijdbc{
     }
 
     @Override
-    public String enableTargetRule(Map<String, String> BRDefinition) {
+    public String enableTrigger(Map<String, String> BRDefinition) {
         return null;
     }
 
     @Override
-    public String disableTargetRule(Map<String, String> BRDefinition) {
+    public String enableConstraint(Map<String, String> BRDefinition) {
+        return null;
+    }
+
+    @Override
+    public String disableTrigger(Map<String, String> BRDefinition) {
+        return "DROP TRIGGER " + BRDefinition.get("NAME") + "DISABLE";
+    }
+
+    @Override
+    public String disableConstraint(Map<String, String> BRDefinition) {
         return null;
     }
 

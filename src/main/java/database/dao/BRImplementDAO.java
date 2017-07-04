@@ -64,8 +64,9 @@ class BRImplementDAO {
 
 
             if (BRDefinition.get("TRIGGER_STATEMENT").equals("TRIGGER")){
-                disableStatement = connection.prepareStatement("DROP TRIGGER " + BRDefinition.get("NAME") + " DISABLE");
+//                disableStatement = connection.prepareStatement("DROP TRIGGER " + BRDefinition.get("NAME") + " DISABLE");
 //                deleteStatement = connection.prepareStatement("DROP TRIGGER " + BRDefinition.get("NAME"));
+                deleteStatement = connection.prepareStatement(jdbcFactory.getDB("orcale").disableTargetRule(BRDefinition));
                 deleteStatement = connection.prepareStatement(jdbcFactory.getDB("orcale").deleteTrigger(BRDefinition));
             }
             else if (BRDefinition.get("TRIGGER_STATEMENT").equals("CONSTRAINT")){

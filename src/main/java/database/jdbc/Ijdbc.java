@@ -9,9 +9,14 @@ import java.util.Map;
  */
 public interface Ijdbc {
     Connection createConnection(String DB_URL, String USER, String PASS) throws SQLException;
+
     String deleteTrigger(Map<String, String> BRDefinition);
     String deleteConstraint(Map<String, String> BRDefinition);
-    String enableTargetRule(Map<String, String> BRDefinition);
-    String disableTargetRule(Map<String, String> BRDefinition);
+
+    String enableTrigger(Map<String, String> BRDefinition);
+    String enableConstraint(Map<String, String> BRDefinition);
+
+    String disableTrigger(Map<String, String> BRDefinition);
+    String disableConstraint(Map<String, String> BRDefinition);
 
 }
