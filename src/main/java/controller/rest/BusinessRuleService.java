@@ -3,14 +3,17 @@ package controller.rest;
 
 
 import controller.logic.GeneratorService;
+import database.dao.DaoService;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import javax.print.attribute.standard.Media;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.Map;
 
 /**
  * Created by JariPC on 3-7-2017.
