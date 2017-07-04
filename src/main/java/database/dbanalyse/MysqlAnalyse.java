@@ -26,6 +26,7 @@ public class MysqlAnalyse implements IAnalyse {
             stmt = conn.createStatement();
             rs = stmt.executeQuery("select COLUMN_NAME, TABLE_NAME from information_schema.columns\n" +
                     "where table_schema = 'mysqltarget'\n" +
+                    "and TABLE_NAME != 'grule'\n" +
                     "order by table_name,ordinal_position");
 
             while (rs.next()) {
@@ -35,7 +36,7 @@ public class MysqlAnalyse implements IAnalyse {
             return allcolls;
 
         } catch (SQLException e) {
-            // Do something with it!
+            e.printStackTrace();
         }
         return null;
     }
