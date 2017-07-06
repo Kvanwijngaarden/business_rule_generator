@@ -70,7 +70,9 @@ class BRImplementDAO {
                 deleteStatement  = connection.prepareStatement(jdbcFactory.getDB("oracle").deleteConstraint(BRDefinition));
             }
 
-            disableStatement.executeQuery();
+            if (disableStatement != null) {
+                disableStatement.executeQuery();
+            }
             deleteStatement.executeQuery();
         }
         catch (SQLException e){
@@ -100,7 +102,9 @@ class BRImplementDAO {
                 enableStatement = connection.prepareStatement(jdbcFactory.getDB("oracle").enableConstraint(BRDefinition));
             }
 
-            enableStatement.executeQuery();
+            if (enableStatement != null) {
+                enableStatement.executeQuery();
+            }
 
         } catch (SQLException e){
             System.out.println(e);
@@ -129,7 +133,9 @@ class BRImplementDAO {
                 disableStatement = connection.prepareStatement(jdbcFactory.getDB("oracle").disableConstraint(BRDefinition));
             }
 
-            disableStatement.executeQuery();
+            if (disableStatement != null) {
+                disableStatement.executeQuery();
+            }
 
         } catch (SQLException e){
             System.out.println(e);
