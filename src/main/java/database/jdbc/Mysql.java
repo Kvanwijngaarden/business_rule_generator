@@ -36,12 +36,12 @@ public class Mysql implements Ijdbc {
 
     @Override
     public String deleteTrigger(Map<String, String> BRDefinition) {
-        return null;
+        return "DROP TRIGGER " + BRDefinition.get("NAME");
     }
 
     @Override
     public String deleteConstraint(Map<String, String> BRDefinition) {
-        return null;
+        return "ALTER TABLE  " + BRDefinition.get("TARGET_TABLE") +" DROP FOREIGN KEY " + BRDefinition.get("NAME");
     }
 
     @Override
@@ -63,6 +63,5 @@ public class Mysql implements Ijdbc {
     public String disableConstraint(Map<String, String> BRDefinition) {
         return null;
     }
-
 
 }
