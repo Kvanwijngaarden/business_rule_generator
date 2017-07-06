@@ -15,6 +15,7 @@ class BRImplementDAO {
     private Statement generatedTemplateStatement;
     private PreparedStatement deleteStatement;
     private PreparedStatement disableStatement;
+    private PreparedStatement enableStatement;
 
     //apply trigger or constraint to target database
     void sendBusinessRule(String businessRule, Map<String, String> DBCredentials) throws SQLException {
@@ -59,14 +60,14 @@ class BRImplementDAO {
             if (BRDefinition.get("TRIGGER_STATEMENT").equals("TRIGGER")){
 //                disableStatement = connection.prepareStatement("DROP TRIGGER " + BRDefinition.get("NAME") + " DISABLE");
 //                deleteStatement = connection.prepareStatement("DROP TRIGGER " + BRDefinition.get("NAME"));
-                disableStatement = connection.prepareStatement(jdbcFactory.getDB("orcale").disableTrigger(BRDefinition));
-                deleteStatement  = connection.prepareStatement(jdbcFactory.getDB("orcale").deleteTrigger(BRDefinition));
+                disableStatement = connection.prepareStatement(jdbcFactory.getDB("oracle").disableTrigger(BRDefinition));
+                deleteStatement  = connection.prepareStatement(jdbcFactory.getDB("oracle").deleteTrigger(BRDefinition));
             }
             else if (BRDefinition.get("TRIGGER_STATEMENT").equals("CONSTRAINT")){
 //                disableStatement = connection.prepareStatement("ALTER TABLE" + BRDefinition.get("TARGET_TABLE") +" DISABLE CONSTRAINT " + BRDefinition.get("NAME"));
 //                deleteStatement = connection.prepareStatement("ALTER TABLE" + BRDefinition.get("TARGET_TABLE") +" DROP CONSTRAINT " + BRDefinition.get("NAME"));
-                disableStatement = connection.prepareStatement(jdbcFactory.getDB("orcale").disableConstraint(BRDefinition));
-                deleteStatement  = connection.prepareStatement(jdbcFactory.getDB("orcale").deleteConstraint(BRDefinition));
+                disableStatement = connection.prepareStatement(jdbcFactory.getDB("oracle").disableConstraint(BRDefinition));
+                deleteStatement  = connection.prepareStatement(jdbcFactory.getDB("oracle").deleteConstraint(BRDefinition));
             }
 
             disableStatement.executeQuery();
@@ -78,6 +79,64 @@ class BRImplementDAO {
         finally{
             if (deleteStatement != null){
                 deleteStatement.close();
+            }
+            if (connection != null){
+                connection.close();
+                System.out.println("Connection to database closed.");
+            }
+        }
+    }
+
+    //enable trigger or constraint from target database
+    void enableBusinessRule(Map<String, String> BRDefinition, Map<String, String> DBCredentials) throws SQLException {
+        try {
+
+            connection = jdbcFactory.getDB("oracle").createConnection(DBCredentials.get("URL"), DBCredentials.get("USER"), DBCredentials.get("PASS"));
+
+            if (BRDefinition.get("TRIGGER_STATEMENT").equals("TRIGGER")){
+                enableStatement = connection.prepareStatement(jdbcFactory.getDB("oracle").enableTrigger(BRDefinition));
+            }
+            else if (BRDefinition.get("TRIGGER_STATEMENT").equals("CONSTRAINT")){
+                enableStatement = connection.prepareStatement(jdbcFactory.getDB("oracle").enableConstraint(BRDefinition));
+            }
+
+            enableStatement.executeQuery();
+
+        } catch (SQLException e){
+            System.out.println(e);
+        }
+        finally{
+            if (enableStatement != null){
+                enableStatement.close();
+            }
+            if (connection != null){
+                connection.close();
+                System.out.println("Connection to database closed.");
+            }
+        }
+    }
+
+    //disable trigger or constraint from target database
+    void disableBusinessRule(Map<String, String> BRDefinition, Map<String, String> DBCredentials) throws SQLException {
+        try {
+
+            connection = jdbcFactory.getDB("oracle").createConnection(DBCredentials.get("URL"), DBCredentials.get("USER"), DBCredentials.get("PASS"));
+
+            if (BRDefinition.get("TRIGGER_STATEMENT").equals("TRIGGER")){
+                disableStatement = connection.prepareStatement(jdbcFactory.getDB("oracle").disableTrigger(BRDefinition));
+            }
+            else if (BRDefinition.get("TRIGGER_STATEMENT").equals("CONSTRAINT")){
+                disableStatement = connection.prepareStatement(jdbcFactory.getDB("oracle").disableConstraint(BRDefinition));
+            }
+
+            disableStatement.executeQuery();
+
+        } catch (SQLException e){
+            System.out.println(e);
+        }
+        finally{
+            if (disableStatement != null){
+                disableStatement.close();
             }
             if (connection != null){
                 connection.close();

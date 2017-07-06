@@ -4,6 +4,9 @@ package controller.rest;
 
 import controller.logic.GeneratorService;
 import database.dao.DaoService;
+import database.dbanalyse.AnalyseFactory;
+import database.dbanalyse.IAnalyse;
+import database.dbanalyse.OracleAnalyse;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -42,8 +45,6 @@ public class BusinessRuleService {
         }
     }
 
-
-
     @GET
     @Produces("text/plain")
     public String getBrule() {
@@ -56,7 +57,7 @@ public class BusinessRuleService {
     @Path("/targetrules")
     @GET
     @Produces({MediaType.APPLICATION_JSON})
-    public Response test() throws SQLException{
+    public Response targetrules() throws SQLException{
         DaoService doa = new DaoService();
 
         /*De map met credentials van de user moet nog meekomen vanuit Apex*/
@@ -72,4 +73,29 @@ public class BusinessRuleService {
         return Response.ok(result).header("Access-Control-Allow-Origin","*").build();
 
     }
+
+    @Path("/targetcolumns")
+    @GET
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response targetcolumns() throws SQLException{
+        DaoService doa = new DaoService();
+
+        /*De map met credentials van de user moet nog meekomen vanuit Apex*/
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("USER", "tosad_2016_2b_team4_target");
+        map.put("PASS", "tosad_2016_2b_team4_target");
+        map.put("URL", "jdbc:oracle:thin:@//ondora02.hu.nl:8521/cursus02.hu.nl");
+
+        Map<String, String> result = new HashMap<String, String>();
+
+        IAnalyse a;
+        a = AnalyseFactory.getAnalyse("oracle");
+
+        result = a.CollectCollumns(map);
+
+        return Response.ok(result).header("Access-Control-Allow-Origin","*").build();
+    }
+
+
+
 }
