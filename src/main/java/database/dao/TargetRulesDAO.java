@@ -46,7 +46,7 @@ public class TargetRulesDAO {
                     BRDef.put(columnName, rs.getString(i));
                 }
             }
-            targetRules.put(rs.getString("RULE_ID"), BRDef);
+            targetRules.put("ID" + rs.getString("RULE_ID"), BRDef);
 
         }
 
