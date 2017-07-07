@@ -63,7 +63,6 @@ public class BusinessRuleService {
 
     @DELETE
     @Path("/deleterule/")
-    @Produces({MediaType.APPLICATION_JSON})
     public Response deleteRule(@FormParam("ruleid") String ruleid){
         try{
             gs.deleteBusinessRule(Integer.parseInt(ruleid));
