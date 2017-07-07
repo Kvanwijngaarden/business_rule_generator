@@ -8,26 +8,10 @@ import database.dbanalyse.OracleAnalyse;
 
 import java.sql.SQLException;
 import java.util.*;
-import javax.print.attribute.standard.Media;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 
-import java.io.File;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-
-import org.w3c.dom.Attr;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 /**
  * Created by JariPC on 3-7-2017.
@@ -86,67 +70,16 @@ public class BusinessRuleService {
         return output;
     }
 
-
-    @Path("/targetrules")
-    @GET
-    @Produces({MediaType.APPLICATION_JSON})
-    public Response targetrules() throws SQLException{
-        DaoService doa = new DaoService();
-
-        /*De map met credentials van de user moet nog meekomen vanuit Apex*/
-        Map<String, String> map = new HashMap<String, String>();
-        map.put("USER", "tosad_2016_2b_team4_target");
-        map.put("PASS", "tosad_2016_2b_team4_target");
-        map.put("URL", "jdbc:oracle:thin:@//ondora02.hu.nl:8521/cursus02.hu.nl");
-
-        Map<String, Map<String,String>> result = new HashMap<String, Map<String,String>>();
-
-        result = doa.getTargetRules(map);
-
-        return Response.ok(result).header("Access-Control-Allow-Origin","*").build();
-
-    }
-
-
-
-    @Path("/targetcolumns")
-    @GET
-    @Produces({MediaType.APPLICATION_JSON})
-    public Response targetcolumns() throws SQLException{
-        DaoService doa = new DaoService();
-
-        /*De map met credentials van de user moet nog meekomen vanuit Apex*/
-        Map<String, String> map = new HashMap<String, String>();
-        map.put("USER", "tosad_2016_2b_team4_target");
-        map.put("PASS", "tosad_2016_2b_team4_target");
-        map.put("URL", "jdbc:oracle:thin:@//ondora02.hu.nl:8521/cursus02.hu.nl");
-
-        Map<String, String> result = new HashMap<String, String>();
-
-        IAnalyse a;
-        a = AnalyseFactory.getAnalyse("oracle");
-
-        result = a.CollectCollumns(map);
-
-        return Response.ok(result).header("Access-Control-Allow-Origin","*").build();
-    }
-
-
-
-
     @POST
     @Path("/disabletarget/")
     public Response disableTarget(@FormParam("ruleid") String ruleid) {
         DaoService doa = new DaoService();
+        Map<String, String> DBCredentials = new HashMap<>();
+        Map<String, String> BRDefinition = new HashMap<>();
 
         try {
-            /*De map met credentials van de user moet nog meekomen vanuit Apex*/
-            Map<String, String> DBCredentials = new HashMap<>();
-            DBCredentials.put("USER", "tosad_2016_2b_team4_target");
-            DBCredentials.put("PASS", "tosad_2016_2b_team4_target");
-            DBCredentials.put("URL", "jdbc:oracle:thin:@//ondora02.hu.nl:8521/cursus02.hu.nl");
-
-            Map BRDefinition = doa.getBRDefinition(Integer.parseInt(ruleid));
+            BRDefinition = doa.getBRDefinition(Integer.parseInt(ruleid));
+            DBCredentials = doa.getDBCredentials(BRDefinition);
 
             doa.disableBusinessRule(BRDefinition, DBCredentials);
 
@@ -167,11 +100,6 @@ public class BusinessRuleService {
         Map<String, String> BRDefinition = new HashMap<>();
 
         try {
-//            De map met credentials van de user moet nog meekomen vanuit Apex
-//            DBCredentials.put("USER", "tosad_2016_2b_team4_target");
-//            DBCredentials.put("PASS", "tosad_2016_2b_team4_target");
-//            DBCredentials.put("URL", "jdbc:oracle:thin:@//ondora02.hu.nl:8521/cursus02.hu.nl");
-
             BRDefinition = doa.getBRDefinition(Integer.parseInt(ruleid));
             DBCredentials = doa.getDBCredentials(BRDefinition);
 
@@ -184,12 +112,58 @@ public class BusinessRuleService {
         } catch (NumberFormatException|NullPointerException e) {
             return Response.status(400).build();
         }
-
     }
 
-    //@POST
-    //@Path("/enabletarget")
+    /*
+    * Deze haalt alle rules vanuit een target database op,
+    * Echter worden deze nog niet in apex getoond via de rest call
+    * aangezien het niet lukt om dit in apex te regelen
+    * */
+    @Path("/targetrules")
+    @GET
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response targetrules() throws SQLException{
+        DaoService doa = new DaoService();
 
+        /*De map met credentials van de user moet nog meekomen vanuit Apex*/
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("USER", "tosad_2016_2b_team4_target");
+        map.put("PASS", "tosad_2016_2b_team4_target");
+        map.put("URL", "jdbc:oracle:thin:@//ondora02.hu.nl:8521/cursus02.hu.nl");
+
+        Map<String, Map<String,String>> result = new HashMap<String, Map<String,String>>();
+
+        result = doa.getTargetRules(map);
+
+        return Response.ok(result).header("Access-Control-Allow-Origin","*").build();
+
+    }
+    /*
+    * Deze haalt alle tables en column vanuit een target database op,
+    * Echter worden deze nog niet in apex getoond via de rest call
+    * aangezien het niet lukt om dit in apex te regelen
+    * */
+    @Path("/targetcolumns")
+    @GET
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response targetcolumns() throws SQLException{
+        DaoService doa = new DaoService();
+
+        /*De map met credentials van de user moet nog meekomen vanuit Apex*/
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("USER", "tosad_2016_2b_team4_target");
+        map.put("PASS", "tosad_2016_2b_team4_target");
+        map.put("URL", "jdbc:oracle:thin:@//ondora02.hu.nl:8521/cursus02.hu.nl");
+
+        Map<String, String> result = new HashMap<>();
+
+        IAnalyse a;
+        a = AnalyseFactory.getAnalyse("oracle");
+
+        result = a.CollectCollumns(map);
+
+        return Response.ok(result).header("Access-Control-Allow-Origin","*").build();
+    }
 
 
 }
