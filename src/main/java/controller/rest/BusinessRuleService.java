@@ -7,16 +7,13 @@ import database.dbanalyse.IAnalyse;
 import database.dbanalyse.OracleAnalyse;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import javax.print.attribute.standard.Media;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import java.util.Map;
 
 import java.io.File;
 import javax.xml.parsers.DocumentBuilder;
@@ -43,7 +40,9 @@ public class BusinessRuleService {
     @POST
     @Path("/insertrules")
     @Produces({MediaType.APPLICATION_JSON})
-    public Response insertRules(@FormParam("IDs") List<String> IDs){
+    public Response insertRules(@FormParam("ruleid") String ruleid){
+
+        List<String> IDs = Arrays.asList(ruleid.split(","));
 
         try{
             List<Integer> intList = new ArrayList();
@@ -127,61 +126,7 @@ public class BusinessRuleService {
         return Response.ok(result).header("Access-Control-Allow-Origin","*").build();
     }
 
-    @Path("/test")
-    @GET
-    @Produces({MediaType.APPLICATION_XML})
-    public Response test() throws SQLException{
-        DaoService doa = new DaoService();
 
-
-        try {
-            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-
-            // root elements
-            Document doc = docBuilder.newDocument();
-            Element rootElement = doc.createElement("company");
-            doc.appendChild(rootElement);
-
-            // staff elements
-            Element staff = doc.createElement("Staff");
-            rootElement.appendChild(staff);
-
-            // set attribute to staff element
-            Attr attr = doc.createAttribute("id");
-            attr.setValue("1");
-            staff.setAttributeNode(attr);
-
-            // firstname elements
-            Element firstname = doc.createElement("firstname");
-            firstname.appendChild(doc.createTextNode("yong"));
-            staff.appendChild(firstname);
-
-            // lastname elements
-            Element lastname = doc.createElement("lastname");
-            lastname.appendChild(doc.createTextNode("mook kim"));
-            staff.appendChild(lastname);
-
-            // nickname elements
-            Element nickname = doc.createElement("nickname");
-            nickname.appendChild(doc.createTextNode("mkyong"));
-            staff.appendChild(nickname);
-
-            // salary elements
-            Element salary = doc.createElement("salary");
-            salary.appendChild(doc.createTextNode("100000"));
-            staff.appendChild(salary);
-
-
-            return Response.ok(doc).header("Access-Control-Allow-Origin","*").build();
-
-        }catch (ParserConfigurationException e){
-            e.printStackTrace();
-        }
-
-
-        return Response.ok("Error").header("Access-Control-Allow-Origin","*").build();
-    }
 
 
     @POST
