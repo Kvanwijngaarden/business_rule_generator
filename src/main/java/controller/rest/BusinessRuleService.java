@@ -61,6 +61,19 @@ public class BusinessRuleService {
         }
     }
 
+    @DELETE
+    @Path("deleterule")
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response deleteRule(@QueryParam("ID") int ID){
+        try{
+            gs.deleteBusinessRule(ID);
+            return Response.status(200).header("Access-Control-Allow-Origin","*").build();
+
+        }catch (Exception e){
+            return Response.status(400).header("Access-Control-Allow-Origin","*").build();
+        }
+    }
+
     @GET
     @Produces("text/plain")
     public String getBrule() {
