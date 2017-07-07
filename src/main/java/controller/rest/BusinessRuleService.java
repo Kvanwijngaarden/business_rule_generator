@@ -62,16 +62,19 @@ public class BusinessRuleService {
     }
 
     @DELETE
-    @Path("deleterule")
+    @Path("/deleterule/")
     @Produces({MediaType.APPLICATION_JSON})
-    public Response deleteRule(@QueryParam("ID") int ID){
+    public Response deleteRule(@FormParam("ruleid") String ruleid){
         try{
-            gs.deleteBusinessRule(ID);
+            gs.deleteBusinessRule(Integer.parseInt(ruleid));
             return Response.status(200).header("Access-Control-Allow-Origin","*").build();
 
-        }catch (Exception e){
+        } catch (SQLException e) {
+            return Response.status(500).header("Access-Control-Allow-Origin","*").build();
+        } catch (NumberFormatException|NullPointerException e) {
             return Response.status(400).header("Access-Control-Allow-Origin","*").build();
         }
+
     }
 
     @GET
