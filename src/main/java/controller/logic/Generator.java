@@ -29,19 +29,28 @@ public class Generator {
     }
 
     public void InsertTemplate(List<Integer> exList) throws SQLException{
+        int error = 0;
+
         for (int brID : exList){
             Map<String, String> BRDefinition = daoService.getBRDefinition(brID);
             Map<String, String> DBCredentials = daoService.getDBCredentials(BRDefinition);
 
-            if(validationHandler.Choice(BRDefinition)) {
+            if(!validationHandler.Choice(BRDefinition)){
+                error = 1;
+            }
+
+            if(error == 0) {
                 String generatedTemplate = generateTemplate(brID);
 
                 // Activeerd te template
                 daoService.sendBusinessRule(generatedTemplate, DBCredentials);
                 // bewaard brule definitie
                 daoService.InsertBRDtoTarget(DBCredentials, BRDefinition);
-
+            }else{
+                throw new java.lang.RuntimeException("Gosh darn it...");
             }
+
+
         }
     }
 
