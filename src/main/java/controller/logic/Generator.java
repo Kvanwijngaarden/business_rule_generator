@@ -1,5 +1,6 @@
 package controller.logic;
 
+import controller.validation.ValidationHandler;
 import database.dao.DaoService;
 
 import java.sql.SQLException;
@@ -11,6 +12,7 @@ import java.util.Map;
  */
 public class Generator {
     private DaoService daoService = new DaoService();
+    private ValidationHandler validationHandler = new ValidationHandler();
 
     /*
      * Generates the template. It searches for keywords and replaces these with values
@@ -28,19 +30,18 @@ public class Generator {
 
     public void InsertTemplate(List<Integer> exList) throws SQLException{
         for (int brID : exList){
-
-
             Map<String, String> BRDefinition = daoService.getBRDefinition(brID);
-
-
             Map<String, String> DBCredentials = daoService.getDBCredentials(BRDefinition);
-            String generatedTemplate = generateTemplate(brID);
 
-            // Activeerd te template
-            daoService.sendBusinessRule(generatedTemplate, DBCredentials);
-            // bewaard brule definitie
-            daoService.InsertBRDtoTarget(DBCredentials, BRDefinition);
+            if(validationHandler.Choice(BRDefinition)) {
+                String generatedTemplate = generateTemplate(brID);
 
+                // Activeerd te template
+                daoService.sendBusinessRule(generatedTemplate, DBCredentials);
+                // bewaard brule definitie
+                daoService.InsertBRDtoTarget(DBCredentials, BRDefinition);
+
+            }
         }
     }
 
