@@ -59,6 +59,7 @@ public class Generator {
 
         daoService.deleteBusinessRule(BRDefinition, DBCredentials);
         daoService.deleteBRDTarget(DBCredentials, BRDefinition);
+        daoService.deleteBRD(BRDefinition);
     }
 
 }

@@ -57,6 +57,10 @@ public class DaoService {
         return targetRulesDAO.getTargetRules(DBCredentials);
     }
 
+    public void deleteBRD(Map<String, String> BRDefinition) throws SQLException{
+        definitionDAO.deleteBRD(BRDefinition);
+    }
+
 //    public ResultSet getTargetRules(Map<String, String> DBCredentials) throws SQLException {
 //        return targetRulesDAO.getTargetRules(DBCredentials);
 //    }

@@ -12,6 +12,7 @@ import java.util.Map;
 class BRDefinitionDAO {
     private Connection connection;
     private Statement statement;
+    private PreparedStatement BRDDeleteStatement;
 
     Map getBusinessRuleDefinition(int brID) throws SQLException {
         String query = "SELECT * FROM GRULE WHERE RULE_ID = " + brID;
@@ -59,5 +60,24 @@ class BRDefinitionDAO {
 
     }
         return BRDef;
+    }
+
+    void deleteBRD(Map<String, String> BRDefinition) throws SQLException {
+        try {
+
+            connection = jdbcFactory.getDB("oracle").createConnection(Constants.DB_URL, Constants.DB_USER, Constants.DB_PASS);
+
+            BRDDeleteStatement = connection.prepareStatement("DELETE FROM GRULE WHERE NAME = '" + BRDefinition.get("NAME") + "'");
+            BRDDeleteStatement.executeQuery();
+        } finally {
+            if (BRDDeleteStatement != null) {
+                BRDDeleteStatement.close();
+            }
+            if (connection != null) {
+                connection.close();
+                System.out.println("Connection to database closed.");
+            }
+        }
+
     }
 }
