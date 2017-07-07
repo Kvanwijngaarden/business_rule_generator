@@ -28,7 +28,7 @@ public class Generator {
         return template;
     }
 
-    public void InsertTemplate(List<Integer> exList) throws SQLException{
+    public int InsertTemplate(List<Integer> exList) throws SQLException{
         int error = 0;
 
         for (int brID : exList){
@@ -47,11 +47,13 @@ public class Generator {
                 // bewaard brule definitie
                 daoService.InsertBRDtoTarget(DBCredentials, BRDefinition);
             }else{
-                throw new java.lang.RuntimeException("Gosh darn it...");
+                return 1;
             }
 
 
         }
+
+        return 0;
     }
 
     public void UpdateTemplate(int brID) throws SQLException{

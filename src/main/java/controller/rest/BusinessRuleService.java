@@ -50,8 +50,13 @@ public class BusinessRuleService {
             for(String s : IDs) {
                 intList.add(Integer.valueOf(s));
             }
-            gs.InsertTemplate(intList);
-            return Response.status(200).build();
+            int goterror = gs.InsertTemplate(intList);
+
+            if (goterror == 1) {
+                return Response.status(400).build();
+            } else {
+                return Response.status(200).build();
+            }
 
         }catch (SQLException e){
             return Response.status(400).build();
@@ -153,7 +158,6 @@ public class BusinessRuleService {
         } catch (NumberFormatException|NullPointerException e) {
             return Response.status(400).build();
         }
-
     }
 
     @POST

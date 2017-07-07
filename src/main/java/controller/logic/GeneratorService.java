@@ -10,8 +10,8 @@ public class GeneratorService {
         return generator.generateTemplate(brID);
     }
 
-    public void InsertTemplate(List<Integer> brID) throws SQLException{
-        generator.InsertTemplate(brID);
+    public int InsertTemplate(List<Integer> brID) throws SQLException{
+        return generator.InsertTemplate(brID);
     }
 
     public void UpdateTemplate(int brID) throws SQLException{
