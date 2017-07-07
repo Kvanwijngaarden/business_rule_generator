@@ -137,7 +137,6 @@ public class BusinessRuleService {
     @POST
     @Path("/disabletarget/")
     public Response disableTarget(@FormParam("ruleid") String ruleid) {
-        //BRDefinitions and BRCredentials
         DaoService doa = new DaoService();
 
         try {
@@ -163,17 +162,18 @@ public class BusinessRuleService {
     @POST
     @Path("/enabletarget/")
     public Response enableTarget(@FormParam("ruleid") String ruleid) {
-        //BRDefinitions and BRCredentials
         DaoService doa = new DaoService();
+        Map<String, String> DBCredentials = new HashMap<>();
+        Map<String, String> BRDefinition = new HashMap<>();
 
         try {
-            /*De map met credentials van de user moet nog meekomen vanuit Apex*/
-            Map<String, String> DBCredentials = new HashMap<>();
-            DBCredentials.put("USER", "tosad_2016_2b_team4_target");
-            DBCredentials.put("PASS", "tosad_2016_2b_team4_target");
-            DBCredentials.put("URL", "jdbc:oracle:thin:@//ondora02.hu.nl:8521/cursus02.hu.nl");
+//            De map met credentials van de user moet nog meekomen vanuit Apex
+//            DBCredentials.put("USER", "tosad_2016_2b_team4_target");
+//            DBCredentials.put("PASS", "tosad_2016_2b_team4_target");
+//            DBCredentials.put("URL", "jdbc:oracle:thin:@//ondora02.hu.nl:8521/cursus02.hu.nl");
 
-            Map BRDefinition = doa.getBRDefinition(Integer.parseInt(ruleid));
+            BRDefinition = doa.getBRDefinition(Integer.parseInt(ruleid));
+            DBCredentials = doa.getDBCredentials(BRDefinition);
 
             doa.enableBusinessRule(BRDefinition, DBCredentials);
 
