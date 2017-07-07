@@ -1,7 +1,5 @@
 package controller.rest;
 
-
-
 import controller.logic.GeneratorService;
 import database.dao.DaoService;
 import database.dbanalyse.AnalyseFactory;
@@ -42,10 +40,10 @@ public class BusinessRuleService {
 
     GeneratorService gs = new GeneratorService();
 
-    @GET
+    @POST
     @Path("/insertrules")
     @Produces({MediaType.APPLICATION_JSON})
-    public Response insertRules(@QueryParam("IDs") List<String> IDs){
+    public Response insertRules(@FormParam("IDs") List<String> IDs){
 
         try{
             List<Integer> intList = new ArrayList();
