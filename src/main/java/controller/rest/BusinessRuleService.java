@@ -184,5 +184,63 @@ public class BusinessRuleService {
     }
 
 
+    @POST
+    @Path("/disabletarget/")
+    public Response disableTarget(@FormParam("ruleid") String ruleid) {
+        //BRDefinitions and BRCredentials
+        DaoService doa = new DaoService();
+
+        try {
+            /*De map met credentials van de user moet nog meekomen vanuit Apex*/
+            Map<String, String> DBCredentials = new HashMap<>();
+            DBCredentials.put("USER", "tosad_2016_2b_team4_target");
+            DBCredentials.put("PASS", "tosad_2016_2b_team4_target");
+            DBCredentials.put("URL", "jdbc:oracle:thin:@//ondora02.hu.nl:8521/cursus02.hu.nl");
+
+            Map BRDefinition = doa.getBRDefinition(Integer.parseInt(ruleid));
+
+            doa.disableBusinessRule(BRDefinition, DBCredentials);
+
+            return Response.status(200).build();
+
+        } catch (SQLException e) {
+            return Response.status(500).build();
+        } catch (NumberFormatException|NullPointerException e) {
+            return Response.status(400).build();
+        }
+
+    }
+
+    @POST
+    @Path("/enabletarget/")
+    public Response enableTarget(@FormParam("ruleid") String ruleid) {
+        //BRDefinitions and BRCredentials
+        DaoService doa = new DaoService();
+
+        try {
+            /*De map met credentials van de user moet nog meekomen vanuit Apex*/
+            Map<String, String> DBCredentials = new HashMap<>();
+            DBCredentials.put("USER", "tosad_2016_2b_team4_target");
+            DBCredentials.put("PASS", "tosad_2016_2b_team4_target");
+            DBCredentials.put("URL", "jdbc:oracle:thin:@//ondora02.hu.nl:8521/cursus02.hu.nl");
+
+            Map BRDefinition = doa.getBRDefinition(Integer.parseInt(ruleid));
+
+            doa.enableBusinessRule(BRDefinition, DBCredentials);
+
+            return Response.status(200).build();
+
+        } catch (SQLException e) {
+            return Response.status(500).build();
+        } catch (NumberFormatException|NullPointerException e) {
+            return Response.status(400).build();
+        }
+
+    }
+
+    //@POST
+    //@Path("/enabletarget")
+
+
 
 }
