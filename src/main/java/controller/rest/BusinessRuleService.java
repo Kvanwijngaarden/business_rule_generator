@@ -4,10 +4,8 @@ import controller.logic.GeneratorService;
 import database.dao.DaoService;
 import database.dbanalyse.AnalyseFactory;
 import database.dbanalyse.IAnalyse;
-import database.dbanalyse.OracleAnalyse;
 
 import java.sql.SQLException;
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.*;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -17,10 +15,19 @@ import javax.ws.rs.core.Response;
 /**
  * Created by JariPC on 3-7-2017.
  */
+/*Rest service that can be called by the Apex client*/
 @Path("/brg")
 public class BusinessRuleService {
 
     GeneratorService gs = new GeneratorService();
+
+    @GET
+    @Produces("text/plain")
+    public String getBrule() {
+
+        String output = "The business rule generator service is online.";
+        return output;
+    }
 
     @POST
     @Path("/insertrules")
@@ -61,14 +68,6 @@ public class BusinessRuleService {
             return Response.status(400).header("Access-Control-Allow-Origin","*").build();
         }
 
-    }
-
-    @GET
-    @Produces("text/plain")
-    public String getBrule() {
-
-        String output = "The brule service is working! Hooray!";
-        return output;
     }
 
     @POST
@@ -121,7 +120,7 @@ public class BusinessRuleService {
     /*
     * Deze haalt alle rules vanuit een target database op,
     * Echter worden deze nog niet in apex getoond via de rest call
-    * aangezien het niet lukt om dit in apex te regelen
+    * aangezien het ons niet lukte om dit in apex te regelen.
     * */
     @Path("/targetrules")
     @GET
@@ -134,6 +133,7 @@ public class BusinessRuleService {
         map.put("USER", "tosad_2016_2b_team4_target");
         map.put("PASS", "tosad_2016_2b_team4_target");
         map.put("URL", "jdbc:oracle:thin:@//ondora02.hu.nl:8521/cursus02.hu.nl");
+        map.put("TYPE", "oracle");
 
         Map<String, Map<String,String>> result = new HashMap<String, Map<String,String>>();
 
@@ -145,7 +145,7 @@ public class BusinessRuleService {
     /*
     * Deze haalt alle tables en column vanuit een target database op,
     * Echter worden deze nog niet in apex getoond via de rest call
-    * aangezien het niet lukt om dit in apex te regelen
+    * aangezien het ons niet lukte om dit in apex te regelen.
     * */
     @Path("/targetcolumns")
     @GET
@@ -158,11 +158,12 @@ public class BusinessRuleService {
         map.put("USER", "tosad_2016_2b_team4_target");
         map.put("PASS", "tosad_2016_2b_team4_target");
         map.put("URL", "jdbc:oracle:thin:@//ondora02.hu.nl:8521/cursus02.hu.nl");
+        map.put("TYPE", "oracle");
 
         Map<String, String> result = new HashMap<>();
 
         IAnalyse a;
-        a = AnalyseFactory.getAnalyse("oracle");
+        a = AnalyseFactory.getAnalyse(map.get("TYPE"));
 
         result = a.CollectCollumns(map);
 

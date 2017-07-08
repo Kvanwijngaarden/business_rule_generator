@@ -10,7 +10,7 @@ import java.util.Map;
 /**
  * Created by kvanwijngaarden on 27/06/2017.
  */
-public class Generator {
+class Generator {
     private DaoService daoService = new DaoService();
     private ValidationHandler validationHandler = new ValidationHandler();
 
@@ -28,7 +28,7 @@ public class Generator {
         return template;
     }
 
-    public int InsertTemplate(List<Integer> exList) throws SQLException{
+    int InsertTemplate(List<Integer> exList) throws SQLException{
         int error = 0;
 
         for (int brID : exList){
@@ -42,9 +42,9 @@ public class Generator {
             if(error == 0) {
                 String generatedTemplate = generateTemplate(brID);
 
-                // Activeerd te template
+                // Activates the template
                 daoService.sendBusinessRule(generatedTemplate, DBCredentials);
-                // bewaard brule definitie
+                // saves business rule definition
                 daoService.InsertBRDtoTarget(DBCredentials, BRDefinition);
             }else{
                 return 1;
@@ -56,7 +56,7 @@ public class Generator {
         return 0;
     }
 
-    public void UpdateTemplate(int brID) throws SQLException{
+    void UpdateTemplate(int brID) throws SQLException{
 
         Map<String, String> BRDefinition = daoService.getBRDefinition(brID);
         Map<String, String> DBCredentials = daoService.getDBCredentials(BRDefinition);
@@ -65,7 +65,7 @@ public class Generator {
 
     }
 
-    public void deleteBusinessRule(int brID) throws SQLException{
+    void deleteBusinessRule(int brID) throws SQLException{
         Map<String, String> BRDefinition = daoService.getBRDefinition(brID);
         Map<String, String> DBCredentials = daoService.getDBCredentials(BRDefinition);
 

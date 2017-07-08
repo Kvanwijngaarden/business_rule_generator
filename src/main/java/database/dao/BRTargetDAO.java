@@ -6,34 +6,23 @@ import java.sql.*;
 import java.util.Map;
 
 
-//This DAO inserts, updates or deletes triggers / constraints to / from target DataAccess.Database
-class BRImplementDAO {
+//This DAO inserts, updates or deletes triggers / constraints to / from target database.
+class BRTargetDAO {
     private Connection connection;
     private Statement generatedTemplateStatement;
     private PreparedStatement deleteStatement;
     private PreparedStatement disableStatement;
     private PreparedStatement enableStatement;
 
-    //apply trigger or constraint to target database
+    //apply disabled trigger or constraint to target database
     void sendBusinessRule(String businessRule, Map<String, String> DBCredentials) throws SQLException {
 
         try{
-//            connection = jdbcFactory.getDB("oracle").getTargetConnection(DBCredentials);
-
-            System.out.println("BRIMPL SEND");
-            System.out.println("url " + DBCredentials.get("URL"));
-            System.out.println("user " + DBCredentials.get("USER"));
-            System.out.println("pass " + DBCredentials.get("PASS"));
-
-            connection = jdbcFactory.getDB("oracle").createConnection(DBCredentials.get("URL"), DBCredentials.get("USER"), DBCredentials.get("PASS"));
-
-
+            connection = jdbcFactory.getDB(DBCredentials.get("TYPE")).createConnection(DBCredentials.get("URL"), DBCredentials.get("USER"), DBCredentials.get("PASS"));
 
             generatedTemplateStatement = connection.createStatement();
 
             generatedTemplateStatement.executeQuery(businessRule);
-
-
         }
         catch (SQLException e){
             System.out.println(e);
@@ -48,21 +37,17 @@ class BRImplementDAO {
         }
     }
 
-    //delete trigger or constraint from target database
+    //disables and deletes trigger or constraint from target database
     void deleteBusinessRule(Map<String, String> BRDefinition, Map<String, String> DBCredentials) throws SQLException {
 
         try{
-            connection = jdbcFactory.getDB("oracle").createConnection(DBCredentials.get("URL"), DBCredentials.get("USER"), DBCredentials.get("PASS"));
+            connection = jdbcFactory.getDB(DBCredentials.get("TYPE")).createConnection(DBCredentials.get("URL"), DBCredentials.get("USER"), DBCredentials.get("PASS"));
 
             if (BRDefinition.get("TRIGGER_STATEMENT").equals("TRIGGER")){
-//                disableStatement = connection.prepareStatement("DROP TRIGGER " + BRDefinition.get("NAME") + " DISABLE");
-//                deleteStatement = connection.prepareStatement("DROP TRIGGER " + BRDefinition.get("NAME"));
                 disableStatement = connection.prepareStatement(jdbcFactory.getDB("oracle").disableTrigger(BRDefinition));
                 deleteStatement  = connection.prepareStatement(jdbcFactory.getDB("oracle").deleteTrigger(BRDefinition));
             }
             else if (BRDefinition.get("TRIGGER_STATEMENT").equals("CONSTRAINT")){
-//                disableStatement = connection.prepareStatement("ALTER TABLE" + BRDefinition.get("TARGET_TABLE") +" DISABLE CONSTRAINT " + BRDefinition.get("NAME"));
-//                deleteStatement = connection.prepareStatement("ALTER TABLE" + BRDefinition.get("TARGET_TABLE") +" DROP CONSTRAINT " + BRDefinition.get("NAME"));
                 disableStatement = connection.prepareStatement(jdbcFactory.getDB("oracle").disableConstraint(BRDefinition));
                 deleteStatement  = connection.prepareStatement(jdbcFactory.getDB("oracle").deleteConstraint(BRDefinition));
             }
@@ -86,12 +71,12 @@ class BRImplementDAO {
         }
     }
 
-    //enable trigger or constraint from target database
+    //enable trigger or constraint in target database
     boolean enableBusinessRule(Map<String, String> BRDefinition, Map<String, String> DBCredentials) throws SQLException {
         boolean success = false;
         try {
 
-            connection = jdbcFactory.getDB("oracle").createConnection(DBCredentials.get("URL"), DBCredentials.get("USER"), DBCredentials.get("PASS"));
+            connection = jdbcFactory.getDB(DBCredentials.get("TYPE")).createConnection(DBCredentials.get("URL"), DBCredentials.get("USER"), DBCredentials.get("PASS"));
 
             if (BRDefinition.get("TRIGGER_STATEMENT").equals("TRIGGER")) {
                 enableStatement = connection.prepareStatement(jdbcFactory.getDB("oracle").enableTrigger(BRDefinition));
@@ -122,11 +107,11 @@ class BRImplementDAO {
         return success;
     }
 
-    //disable trigger or constraint from target database
+    //disable trigger or constraint in target database
     void disableBusinessRule(Map<String, String> BRDefinition, Map<String, String> DBCredentials) throws SQLException {
         try {
 
-            connection = jdbcFactory.getDB("oracle").createConnection(DBCredentials.get("URL"), DBCredentials.get("USER"), DBCredentials.get("PASS"));
+            connection = jdbcFactory.getDB(DBCredentials.get("TYPE")).createConnection(DBCredentials.get("URL"), DBCredentials.get("USER"), DBCredentials.get("PASS"));
 
             if (BRDefinition.get("TRIGGER_STATEMENT").equals("TRIGGER")){
                 disableStatement = connection.prepareStatement(jdbcFactory.getDB("oracle").disableTrigger(BRDefinition));

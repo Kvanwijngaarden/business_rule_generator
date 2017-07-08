@@ -15,7 +15,7 @@ public class OracleAnalyse implements IAnalyse {
     @Override
     public Map<String, String> CollectCollumns(Map<String, String> DBCredentials) {
         try {
-            Map allcolls = new HashMap();
+            Map allcolums = new HashMap();
             Statement stmt = null;
             ResultSet rs = null;
             Connection conn = null;
@@ -28,10 +28,10 @@ public class OracleAnalyse implements IAnalyse {
                     "AND TABLE_NAME != 'GRULE'");
 
             while (rs.next()) {
-                allcolls.put(rs.getString(1).toLowerCase(), rs.getString(2).toLowerCase());
+                allcolums.put(rs.getString(1).toLowerCase(), rs.getString(2).toLowerCase());
             }
 
-            return allcolls;
+            return allcolums;
 
         } catch (SQLException e) {
             e.printStackTrace();

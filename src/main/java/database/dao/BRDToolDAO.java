@@ -8,8 +8,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-//This DAO fetches the businessrule definitions for the rule to be generated
-class BRDefinitionDAO {
+//This DAO fetches or deletes business rule definitions from the tool database
+class BRDToolDAO {
     private Connection connection;
     private Statement statement;
     private PreparedStatement BRDDeleteStatement;
@@ -20,12 +20,6 @@ class BRDefinitionDAO {
         Map<String, String> BRDef = new HashMap();
 
         try{
-//            connection = jdbcFactory.getDB("oracle").getToolConnection();
-
-            System.out.println("Definition");
-            System.out.println("url " + Constants.DB_URL);
-            System.out.println("user " + Constants.DB_USER);
-            System.out.println("pass " + Constants.DB_PASS);
             connection = jdbcFactory.getDB("oracle").createConnection(Constants.DB_URL, Constants.DB_USER, Constants.DB_PASS);
 
             statement = connection.createStatement();
@@ -46,7 +40,7 @@ class BRDefinitionDAO {
 
         } catch (SQLException e) {
             System.out.println("ERROR: Unable to Connect to DataAccess.Database.");
-//            throw new SQLException(e);
+            System.out.println(e);
     }
         finally {
             if (rs != null){

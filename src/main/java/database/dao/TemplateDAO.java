@@ -10,7 +10,7 @@ import java.sql.Statement;
 import java.util.Map;
 
 
-//Deze DAO klasse haalt de template uit de tooldatabase die overeenkomt met de taal en businessrule type van de te genereren businessrule
+//This DAO fetches the template from the tool database that matches the language and business rule type of the business rule to generate
 class TemplateDAO {
     private Connection connection;
     private Statement statement;
@@ -24,13 +24,6 @@ class TemplateDAO {
         ResultSet rs = null;
         String templateValue = null;
         try {
-//            connection = jdbcFactory.getDB("oracle").getToolConnection();
-
-
-            System.out.println("Template");
-            System.out.println("url " + Constants.DB_URL);
-            System.out.println("user " + Constants.DB_USER);
-            System.out.println("pass " + Constants.DB_PASS);
 
             connection = jdbcFactory.getDB("oracle").createConnection(Constants.DB_URL, Constants.DB_USER, Constants.DB_PASS);
 
@@ -44,7 +37,7 @@ class TemplateDAO {
 
         } catch (SQLException e) {
             System.out.println("ERROR: Unable to Connect to DataAccess.Database.");
-//            throw new SQLException(e);
+            System.out.println(e);
         }
         finally {
             if (rs != null){

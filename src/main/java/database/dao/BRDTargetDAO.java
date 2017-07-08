@@ -2,37 +2,22 @@ package database.dao;
 
 import database.jdbc.jdbcFactory;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.HashMap;
 import java.util.Map;
 
 //This DAO inserts, updates or deletes businessrule definition to / from target database
-class BRDImplementDAO {
+class BRDTargetDAO {
     private Connection connection;
     private PreparedStatement BRDStatement;
     private PreparedStatement BRDDeleteStatement;
+    private Statement statement;
 
-
-    /* Slaat record op van de rules.. niet de template activeren.. Alleen de waardes die erin moeten komen */
-
-    public void InsertBRDtoTarget(Map<String, String> DBCredentials, Map<String, String> BRDefinition) throws SQLException {
+    /* Inserts business rule definition into target database.*/
+    void InsertBRDtoTarget(Map<String, String> DBCredentials, Map<String, String> BRDefinition) throws SQLException {
 
         try {
-//            connection = jdbcFactory.getDB("oracle").getTargetConnection(DBCredentials);
-
-
-
-            System.out.println("BRDIMPL INSERT");
-            System.out.println("url " +  DBCredentials.get("URL"));
-            System.out.println("user " + DBCredentials.get("USER"));
-            System.out.println("pass " + DBCredentials.get("PASS"));
-
-            connection = jdbcFactory.getDB("oracle").createConnection(DBCredentials.get("URL"), DBCredentials.get("USER"), DBCredentials.get("PASS"));
-
-
-
-
+            connection = jdbcFactory.getDB(DBCredentials.get("TYPE")).createConnection(DBCredentials.get("URL"), DBCredentials.get("USER"), DBCredentials.get("PASS"));
 
             BRDStatement = connection.prepareStatement("INSERT INTO GRULE (RULE_ID, DESCRIPTION, NAME, TARGET_TABLE, TARGET_COLUMN, TRIGGER_EVENT, OPERATOR, VALUE, VALUE2, COMPARE_TABLE, COMPARE_COLUMN, TRIGGER_ON, TRIGGER_STATEMENT, ISACTIVE, GCUSTOMER_CUS_ID, GRULETYPE_RULETYPE_ID, GLANGUAGE_LANG_ID) VALUES ('" + BRDefinition.get("RULE_ID") + "',?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
@@ -67,23 +52,11 @@ class BRDImplementDAO {
 
     }
 
-    public void UpdateBRDtoTarget(Map<String, String> DBCredentials, Map<String, String> BRDefinition) throws SQLException {
+    /*Updates business rule definition in target database.*/
+    void UpdateBRDtoTarget(Map<String, String> DBCredentials, Map<String, String> BRDefinition) throws SQLException {
 
         try {
-//            connection = jdbcFactory.getDB("oracle").getTargetConnection(DBCredentials);
-
-
-            System.out.println("BRDIMPL UPDATE");
-            System.out.println("url " + DBCredentials.get("URL"));
-            System.out.println("user " + DBCredentials.get("USER"));
-            System.out.println("pass " + DBCredentials.get("PASS"));
-
-            connection = jdbcFactory.getDB("oracle").createConnection(DBCredentials.get("URL"), DBCredentials.get("USER"), DBCredentials.get("PASS"));
-
-
-
-
-
+            connection = jdbcFactory.getDB(DBCredentials.get("TYPE")).createConnection(DBCredentials.get("URL"), DBCredentials.get("USER"), DBCredentials.get("PASS"));
 
             BRDStatement = connection.prepareStatement("UPDATE GRULE SET DESCRIPTION = ?, NAME = ?, TARGET_TABLE = ?, TARGET_COLUMN = ?, TRIGGER_EVENT = ?, OPERATOR = ?, VALUE = ?, VALUE2 = ?, COMPARE_TABLE = ?, COMPARE_COLUMN = ?, TRIGGER_ON = ?, TRIGGER_STATEMENT = ?, ISACTIVE = ?, GCUSTOMER_CUS_ID = ?, GRULETYPE_RULETYPE_ID = ?, GLANGUAGE_LANG_ID = ? WHERE NAME= '" + BRDefinition.get("NAME") + "'");
 
@@ -122,22 +95,10 @@ class BRDImplementDAO {
 
     }
 
-
-
-
-
-
+    /*Deletes business rule definition from target database.*/
     void deleteBRDTarget(Map<String, String> DBCredentials, Map<String, String> BRDefinition) throws SQLException {
         try {
-//            connection = jdbcFactory.getDB("oracle").getTargetConnection(DBCredentials);
-
-            System.out.println("BRDIMPL DELETE");
-            System.out.println("url " + DBCredentials.get("URL"));
-            System.out.println("user " + DBCredentials.get("USER"));
-            System.out.println("pass " + DBCredentials.get("PASS"));
-
-            connection = jdbcFactory.getDB("oracle").createConnection(DBCredentials.get("URL"), DBCredentials.get("USER"), DBCredentials.get("PASS"));
-
+            connection = jdbcFactory.getDB(DBCredentials.get("TYPE")).createConnection(DBCredentials.get("URL"), DBCredentials.get("USER"), DBCredentials.get("PASS"));
 
             BRDDeleteStatement = connection.prepareStatement("DELETE FROM GRULE WHERE NAME = '" + BRDefinition.get("NAME") + "'");
             BRDDeleteStatement.executeQuery();
@@ -152,4 +113,34 @@ class BRDImplementDAO {
         }
 
     }
+
+    /*Fetches all business rule definitions from the target database*/
+    Map<String, Map<String,String>> getTargetRules(Map<String, String> DBCredentials) throws SQLException{
+
+        String query = "SELECT * FROM GRULE";
+        ResultSet rs = null;
+
+        Map<String, Map<String, String>> targetRules = new HashMap<>();
+        connection = jdbcFactory.getDB(DBCredentials.get("TYPE")).createConnection(DBCredentials.get("URL"), DBCredentials.get("USER"), DBCredentials.get("PASS"));
+
+        statement = connection.createStatement();
+        rs = statement.executeQuery(query);
+        ResultSetMetaData rsmd = rs.getMetaData();
+        int columnCount = rsmd.getColumnCount();
+
+        while (rs.next()) {
+            Map<String, String> BRDef = new HashMap<>();
+            for (int i = 1; i <= columnCount; i++) {
+                String columnName = rsmd.getColumnName(i);
+                if (rs.getString(i) != null) {
+                    BRDef.put(columnName, rs.getString(i));
+                }
+            }
+            targetRules.put("ID" + rs.getString("RULE_ID"), BRDef);
+
+        }
+
+        return targetRules;
+    }
+
 }
