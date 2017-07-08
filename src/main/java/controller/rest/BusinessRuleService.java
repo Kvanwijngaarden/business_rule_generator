@@ -107,10 +107,12 @@ public class BusinessRuleService {
 
             return Response.status(200).build();
 
-        } catch (SQLException e) {
-            return Response.status(500).build();
-        } catch (NumberFormatException|NullPointerException e) {
+        } catch (Exception e){
             return Response.status(400).build();
+//        } catch (SQLException e) {
+//            return Response.status(500).build();
+//        } catch (NumberFormatException|NullPointerException e) {
+//            return Response.status(400).build();
         }
     }
 

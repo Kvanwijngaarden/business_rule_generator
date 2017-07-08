@@ -2,10 +2,7 @@ package database.dao;
 
 import database.jdbc.jdbcFactory;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.Map;
 
 
@@ -95,10 +92,9 @@ class BRImplementDAO {
 
             connection = jdbcFactory.getDB("oracle").createConnection(DBCredentials.get("URL"), DBCredentials.get("USER"), DBCredentials.get("PASS"));
 
-            if (BRDefinition.get("TRIGGER_STATEMENT").equals("TRIGGER")){
+            if (BRDefinition.get("TRIGGER_STATEMENT").equals("TRIGGER")) {
                 enableStatement = connection.prepareStatement(jdbcFactory.getDB("oracle").enableTrigger(BRDefinition));
-            }
-            else if (BRDefinition.get("TRIGGER_STATEMENT").equals("CONSTRAINT")){
+            } else if (BRDefinition.get("TRIGGER_STATEMENT").equals("CONSTRAINT")) {
                 enableStatement = connection.prepareStatement(jdbcFactory.getDB("oracle").enableConstraint(BRDefinition));
             }
 
@@ -106,9 +102,13 @@ class BRImplementDAO {
                 enableStatement.executeQuery();
             }
 
-        } catch (SQLException e){
+        } catch (Exception e){
             System.out.println(e);
         }
+
+//        } catch (SQLException e){
+//            System.out.println(e);
+//        }
         finally{
             if (enableStatement != null){
                 enableStatement.close();
