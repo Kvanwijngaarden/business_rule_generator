@@ -87,7 +87,8 @@ class BRImplementDAO {
     }
 
     //enable trigger or constraint from target database
-    void enableBusinessRule(Map<String, String> BRDefinition, Map<String, String> DBCredentials) throws SQLException {
+    boolean enableBusinessRule(Map<String, String> BRDefinition, Map<String, String> DBCredentials) throws SQLException {
+        boolean success = false;
         try {
 
             connection = jdbcFactory.getDB("oracle").createConnection(DBCredentials.get("URL"), DBCredentials.get("USER"), DBCredentials.get("PASS"));
@@ -102,13 +103,13 @@ class BRImplementDAO {
                 enableStatement.executeQuery();
             }
 
-        } catch (Exception e){
-            System.out.println(e);
-        }
+            success = true;
 
-//        } catch (SQLException e){
-//            System.out.println(e);
-//        }
+        } catch (SQLException e){
+            System.out.println(e);
+
+            success = false;
+        }
         finally{
             if (enableStatement != null){
                 enableStatement.close();
@@ -118,6 +119,7 @@ class BRImplementDAO {
                 System.out.println("Connection to database closed.");
             }
         }
+        return success;
     }
 
     //disable trigger or constraint from target database

@@ -37,8 +37,8 @@ public class DaoService {
         brImplementDAO.disableBusinessRule(BRDefinition, DBCredentials);
     }
 
-    public void enableBusinessRule(Map<String, String> BRDefinition, Map<String, String> DBCredentials) throws SQLException{
-        brImplementDAO.enableBusinessRule(BRDefinition, DBCredentials);
+    public boolean enableBusinessRule(Map<String, String> BRDefinition, Map<String, String> DBCredentials) throws SQLException{
+        return brImplementDAO.enableBusinessRule(BRDefinition, DBCredentials);
     }
 
     public void InsertBRDtoTarget(Map<String, String> DBCredentials, Map<String, String> BRDefinition) throws SQLException {

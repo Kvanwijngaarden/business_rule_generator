@@ -7,6 +7,7 @@ import database.dbanalyse.IAnalyse;
 import database.dbanalyse.OracleAnalyse;
 
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.*;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -103,17 +104,18 @@ public class BusinessRuleService {
             BRDefinition = doa.getBRDefinition(Integer.parseInt(ruleid));
             DBCredentials = doa.getDBCredentials(BRDefinition);
 
-            doa.enableBusinessRule(BRDefinition, DBCredentials);
+            if(doa.enableBusinessRule(BRDefinition, DBCredentials)){
+                return Response.status(200).build();
 
-            return Response.status(200).build();
+            }else return Response.status(500).build();
 
-        } catch (Exception e){
+        } catch (SQLException e) {
+            return Response.status(500).build();
+
+        } catch (NumberFormatException|NullPointerException e) {
             return Response.status(400).build();
-//        } catch (SQLException e) {
-//            return Response.status(500).build();
-//        } catch (NumberFormatException|NullPointerException e) {
-//            return Response.status(400).build();
         }
+
     }
 
     /*
