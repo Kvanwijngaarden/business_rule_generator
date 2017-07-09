@@ -12,7 +12,6 @@ import java.util.Map;
 class BRDToolDAO {
     private Connection connection;
     private Statement statement;
-    private PreparedStatement BRDDeleteStatement;
 
     Map getBusinessRuleDefinition(int brID) throws SQLException {
         String query = "SELECT * FROM GRULE WHERE RULE_ID = " + brID;
@@ -57,6 +56,7 @@ class BRDToolDAO {
     }
 
     void deleteBRD(Map<String, String> BRDefinition) throws SQLException {
+        PreparedStatement BRDDeleteStatement = null;
         try {
 
             connection = jdbcFactory.getDB("oracle").createConnection(Constants.DB_URL, Constants.DB_USER, Constants.DB_PASS);
@@ -66,6 +66,26 @@ class BRDToolDAO {
         } finally {
             if (BRDDeleteStatement != null) {
                 BRDDeleteStatement.close();
+            }
+            if (connection != null) {
+                connection.close();
+                System.out.println("Connection to database closed.");
+            }
+        }
+
+    }
+
+    void setBRDToGenerated(Map<String, String> BRDefinition) throws SQLException {
+        PreparedStatement BRDGenerated = null;
+        try {
+
+            connection = jdbcFactory.getDB("oracle").createConnection(Constants.DB_URL, Constants.DB_USER, Constants.DB_PASS);
+
+            BRDGenerated = connection.prepareStatement("UPDATE GRULE SET GENERATED = 1 WHERE NAME = '" + BRDefinition.get("NAME") + "'");
+            BRDGenerated.executeQuery();
+        } finally {
+            if (BRDGenerated != null) {
+                BRDGenerated.close();
             }
             if (connection != null) {
                 connection.close();

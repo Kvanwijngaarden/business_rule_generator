@@ -46,6 +46,8 @@ class Generator {
                 daoService.sendBusinessRule(generatedTemplate, DBCredentials);
                 // saves business rule definition
                 daoService.InsertBRDtoTarget(DBCredentials, BRDefinition);
+                // sets business rule definition in tool to generated
+                daoService.setBRDToGenerated(BRDefinition);
             }else{
                 return 1;
             }

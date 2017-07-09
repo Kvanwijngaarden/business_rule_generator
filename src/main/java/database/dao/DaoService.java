@@ -59,4 +59,8 @@ public class DaoService {
         brdToolDAO.deleteBRD(BRDefinition);
     }
 
+    public void setBRDToGenerated(Map<String, String> BRDefinition) throws SQLException{
+        brdToolDAO.setBRDToGenerated(BRDefinition);
+    }
+
 }
