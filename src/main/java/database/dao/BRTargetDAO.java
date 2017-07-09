@@ -44,12 +44,12 @@ class BRTargetDAO {
             connection = jdbcFactory.getDB(DBCredentials.get("TYPE")).createConnection(DBCredentials.get("URL"), DBCredentials.get("USER"), DBCredentials.get("PASS"));
 
             if (BRDefinition.get("TRIGGER_STATEMENT").equals("TRIGGER")){
-                disableStatement = connection.prepareStatement(jdbcFactory.getDB("oracle").disableTrigger(BRDefinition));
-                deleteStatement  = connection.prepareStatement(jdbcFactory.getDB("oracle").deleteTrigger(BRDefinition));
+                disableStatement = connection.prepareStatement(jdbcFactory.getDB(DBCredentials.get("TYPE")).disableTrigger(BRDefinition));
+                deleteStatement  = connection.prepareStatement(jdbcFactory.getDB(DBCredentials.get("TYPE")).deleteTrigger(BRDefinition));
             }
             else if (BRDefinition.get("TRIGGER_STATEMENT").equals("CONSTRAINT")){
-                disableStatement = connection.prepareStatement(jdbcFactory.getDB("oracle").disableConstraint(BRDefinition));
-                deleteStatement  = connection.prepareStatement(jdbcFactory.getDB("oracle").deleteConstraint(BRDefinition));
+                disableStatement = connection.prepareStatement(jdbcFactory.getDB(DBCredentials.get("TYPE")).disableConstraint(BRDefinition));
+                deleteStatement  = connection.prepareStatement(jdbcFactory.getDB(DBCredentials.get("TYPE")).deleteConstraint(BRDefinition));
             }
 
             if (disableStatement != null) {
@@ -79,9 +79,9 @@ class BRTargetDAO {
             connection = jdbcFactory.getDB(DBCredentials.get("TYPE")).createConnection(DBCredentials.get("URL"), DBCredentials.get("USER"), DBCredentials.get("PASS"));
 
             if (BRDefinition.get("TRIGGER_STATEMENT").equals("TRIGGER")) {
-                enableStatement = connection.prepareStatement(jdbcFactory.getDB("oracle").enableTrigger(BRDefinition));
+                enableStatement = connection.prepareStatement(jdbcFactory.getDB(DBCredentials.get("TYPE")).enableTrigger(BRDefinition));
             } else if (BRDefinition.get("TRIGGER_STATEMENT").equals("CONSTRAINT")) {
-                enableStatement = connection.prepareStatement(jdbcFactory.getDB("oracle").enableConstraint(BRDefinition));
+                enableStatement = connection.prepareStatement(jdbcFactory.getDB(DBCredentials.get("TYPE")).enableConstraint(BRDefinition));
             }
 
             if (enableStatement != null) {
@@ -114,10 +114,10 @@ class BRTargetDAO {
             connection = jdbcFactory.getDB(DBCredentials.get("TYPE")).createConnection(DBCredentials.get("URL"), DBCredentials.get("USER"), DBCredentials.get("PASS"));
 
             if (BRDefinition.get("TRIGGER_STATEMENT").equals("TRIGGER")){
-                disableStatement = connection.prepareStatement(jdbcFactory.getDB("oracle").disableTrigger(BRDefinition));
+                disableStatement = connection.prepareStatement(jdbcFactory.getDB(DBCredentials.get("TYPE")).disableTrigger(BRDefinition));
             }
             else if (BRDefinition.get("TRIGGER_STATEMENT").equals("CONSTRAINT")){
-                disableStatement = connection.prepareStatement(jdbcFactory.getDB("oracle").disableConstraint(BRDefinition));
+                disableStatement = connection.prepareStatement(jdbcFactory.getDB(DBCredentials.get("TYPE")).disableConstraint(BRDefinition));
             }
 
             if (disableStatement != null) {

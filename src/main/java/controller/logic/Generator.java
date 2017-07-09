@@ -19,10 +19,11 @@ class Generator {
      * Keywords look like xx{COLUMN_NAME}xx
     */
     String generateTemplate(int brID) throws SQLException {
-        Map<String, String> definition = daoService.getBRDefinition(brID);
-        String template = daoService.getTemplate(definition);
+        Map<String, String> BRDefinition = daoService.getBRDefinition(brID);
+        Map<String, String> DBCredentials = daoService.getDBCredentials(BRDefinition);
+        String template = daoService.getTemplate(BRDefinition, DBCredentials);
 
-        for (Map.Entry<String, String> entry : definition.entrySet()) {
+        for (Map.Entry<String, String> entry : BRDefinition.entrySet()) {
             template = template.replaceAll("\\b"+"xx"+entry.getKey()+"xx"+"\\b", entry.getValue());
         }
         return template;

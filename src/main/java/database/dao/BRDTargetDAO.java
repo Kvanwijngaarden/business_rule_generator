@@ -36,7 +36,6 @@ class BRDTargetDAO {
             BRDStatement.setInt(13, 1);
             BRDStatement.setInt(14, Integer.parseInt(BRDefinition.get("GCUSTOMER_CUS_ID")));
             BRDStatement.setInt(15, Integer.parseInt(BRDefinition.get("GRULETYPE_RULETYPE_ID")));
-            BRDStatement.setInt(16, Integer.parseInt(BRDefinition.get("GLANGUAGE_LANG_ID")));
 
 
             BRDStatement.executeQuery();
@@ -75,7 +74,6 @@ class BRDTargetDAO {
             BRDStatement.setInt(13, 1);
             BRDStatement.setInt(14, Integer.parseInt(BRDefinition.get("GCUSTOMER_CUS_ID")));
             BRDStatement.setInt(15, Integer.parseInt(BRDefinition.get("GRULETYPE_RULETYPE_ID")));
-            BRDStatement.setInt(16, Integer.parseInt(BRDefinition.get("GLANGUAGE_LANG_ID")));
 
 
             BRDStatement.executeQuery();

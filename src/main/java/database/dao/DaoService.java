@@ -15,8 +15,8 @@ public class DaoService {
         return brdToolDAO.getBusinessRuleDefinition(brID);
     }
 
-    public String getTemplate(Map<String, String> BRDefinition) throws SQLException{
-        return templateDAO.getTemplate(BRDefinition);
+    public String getTemplate(Map<String, String> BRDefinition, Map<String, String> DBCredentials) throws SQLException{
+        return templateDAO.getTemplate(BRDefinition, DBCredentials);
     }
 
     public Map getDBCredentials(Map<String, String> BRDefinition) throws SQLException{
