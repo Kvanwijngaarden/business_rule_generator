@@ -9,8 +9,8 @@ public class AttributeOtherRule implements IValidate{
     public boolean Validate(Map<String, String> Brule){
         ValidationFunctions vf = new ValidationFunctions();
 
-        String[] fieldstrigger = "GLANGUAGE_LANG_ID|TARGET_TABLE|TARGET_COLUMN|GRULETYPE_RULETYPE_ID|TRIGGER_EVENT|TRIGGER_ON|VALUE".split("\\|");
-        String[] fieldscontraint = "GLANGUAGE_LANG_ID|TARGET_TABLE|TARGET_COLUMN|GRULETYPE_RULETYPE_ID|VALUE".split("\\|");
+        String[] fieldstrigger = "TARGET_TABLE|TARGET_COLUMN|GRULETYPE_RULETYPE_ID|TRIGGER_EVENT|TRIGGER_ON|VALUE".split("\\|");
+        String[] fieldscontraint = "TARGET_TABLE|TARGET_COLUMN|GRULETYPE_RULETYPE_ID|VALUE".split("\\|");
 
         if (Brule.get("TRIGGER_EVENT") != null || Brule.get("TRIGGER_ON") != null){
             return vf.EmptyCheck(Brule, fieldstrigger);

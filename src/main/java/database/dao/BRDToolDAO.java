@@ -40,7 +40,7 @@ class BRDToolDAO {
         } catch (SQLException e) {
             System.out.println("ERROR: Unable to Connect to DataAccess.Database.");
             System.out.println(e);
-    }
+        }
         finally {
             if (rs != null){
                 rs.close();}
@@ -48,10 +48,10 @@ class BRDToolDAO {
                 statement.close();}
             if (connection != null){
                 connection.close();
-            System.out.println("Connection to database closed.");}
+                System.out.println("Connection to database closed.");}
 
 
-    }
+        }
         return BRDef;
     }
 
@@ -95,3 +95,4 @@ class BRDToolDAO {
 
     }
 }
+

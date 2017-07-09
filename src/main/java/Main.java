@@ -16,9 +16,14 @@ import java.util.Map;
 public class Main {
 
     public static void main(String args[]) throws SQLException{
-//        GeneratorService gen = new GeneratorService();
+        GeneratorService gen = new GeneratorService();
 //
-//        DaoService doa = new DaoService();
+        DaoService doa = new DaoService();
+
+        List<Integer> list = new ArrayList<>();
+        list.add(258);
+
+        gen.InsertTemplate(list);
 //
 //
 //
